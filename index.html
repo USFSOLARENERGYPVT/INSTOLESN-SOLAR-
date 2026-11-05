@@ -1,1 +1,177 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USF SOLAR | Admin Panel</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ font-family:Arial,sans-serif;
+ background:#f2f5fa;color:#172033;
+}
+header{
+ background:#101d35;color:white;
+ padding:20px;
+ display:flex;justify-content:space-between;
+ align-items:center;
+}
+.logo{font-size:23px;font-weight:bold;color:#ffb900}
+header small{color:#ddd}
+.container{padding:20px;max-width:1100px;margin:auto}
+.welcome{margin-bottom:22px}
+.welcome h2{margin-bottom:7px}
+.cards{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:14px;margin-bottom:25px;
+}
+.card{
+ background:white;padding:20px;
+ border-radius:13px;
+ box-shadow:0 2px 9px #00000010;
+}
+.card h3{font-size:14px;color:#68758b}
+.card p{font-size:27px;font-weight:bold;margin-top:12px}
+h3.section{margin:20px 0 12px}
+.menu{
+ display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+}
+.menu button{
+ padding:19px 10px;background:white;
+ border:1px solid #e2e7ef;border-radius:12px;
+ font-size:15px;font-weight:bold;color:#172033;
+ cursor:pointer;
+}
+.menu button:active{background:#fff3d2}
+.panel{
+ background:white;padding:20px;border-radius:13px;
+ margin-top:20px;
+}
+input,select{
+ width:100%;padding:13px;margin:8px 0;
+ border:1px solid #ccd3df;border-radius:8px;
+}
+.action{
+ background:#f5a900;color:#111;border:0;
+ padding:13px;border-radius:8px;font-weight:bold;
+ width:100%;margin-top:8px;
+}
+footer{text-align:center;padding:25px;color:#777;font-size:13px}
+@media(min-width:700px){
+ .cards,.menu{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div>
+  <div class="logo">☀ USF SOLAR</div>
+  <small>Admin Management System</small>
+ </div>
+ <div>ADMIN</div>
+</header>
+
+<div class="container">
+
+<div class="welcome">
+ <h2>Welcome, Admin 👋</h2>
+ <p>USF SOLAR Business Dashboard</p>
+</div>
+
+<div class="cards">
+ <div class="card">
+  <h3>Total Customers</h3>
+  <p id="customers">0</p>
+ </div>
+ <div class="card">
+  <h3>Total Enquiries</h3>
+  <p id="enquiries">0</p>
+ </div>
+ <div class="card">
+  <h3>Dealers</h3>
+  <p id="dealers">0</p>
+ </div>
+ <div class="card">
+  <h3>Contractors</h3>
+  <p id="contractors">0</p>
+ </div>
+</div>
+
+<h3 class="section">Management Menu</h3>
+
+<div class="menu">
+ <button onclick="showForm('Customer')">👥 Customers</button>
+ <button onclick="showForm('Enquiry')">📩 Enquiries</button>
+ <button onclick="showForm('Dealer')">🏢 Dealers</button>
+ <button onclick="showForm('Contractor')">👷 Contractors</button>
+ <button onclick="showForm('Project')">☀ Solar Projects</button>
+ <button onclick="showForm('Payment')">💰 Payments</button>
+ <button onclick="showForm('Staff')">🧑‍💼 Staff</button>
+ <button onclick="showForm('Report')">📊 Reports</button>
+</div>
+
+<div class="panel" id="formPanel">
+ <h3>Admin Information</h3>
+ <p style="margin-top:10px;color:#667085">
+ USF SOLAR Admin Panel is ready for setup.
+ </p>
+</div>
+
+</div>
+
+<footer>
+© 2026 USF SOLAR | Vadodara, Gujarat<br>
+Founder & Owner: Shadab Khan
+</footer>
+
+<script>
+function showForm(type){
+ document.getElementById("formPanel").innerHTML=`
+ <h3>Add ${type}</h3>
+ <input id="name" placeholder="${type} Name">
+ <input id="phone" placeholder="Mobile Number">
+ <input id="city" placeholder="City">
+ <button class="action" onclick="saveData('${type}')">
+ Save ${type}
+ </button>
+ <div id="message" style="margin-top:12px"></div>
+ `;
+}
+
+function saveData(type){
+ const name=document.getElementById("name").value.trim();
+ const phone=document.getElementById("phone").value.trim();
+ const city=document.getElementById("city").value.trim();
+
+ if(!name || !phone){
+  alert("Please enter name and mobile number");
+  return;
+ }
+
+ let records=JSON.parse(localStorage.getItem(type)||"[]");
+ records.push({name,phone,city,date:new Date().toLocaleDateString()});
+ localStorage.setItem(type,JSON.stringify(records));
+
+ document.getElementById("message").innerText=
+ type+" saved successfully on this device!";
+ updateCounts();
+}
+
+function updateCounts(){
+ ["Customer","Enquiry","Dealer","Contractor"].forEach(type=>{
+  let data=JSON.parse(localStorage.getItem(type)||"[]");
+  let id=type.toLowerCase()+"s";
+  document.getElementById(id).innerText=data.length;
+ });
+}
+updateCounts();
+</script>
+
+</body>
+</html>
+
