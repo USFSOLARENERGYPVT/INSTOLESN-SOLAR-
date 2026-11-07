@@ -1,1 +1,292 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USF Solar - Realistic 3D Earth & Solar Grids</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #030712;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(3, 7, 18, 0.95);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo span {
+            color: #ffffff;
+        }
+        .visit-btn {
+            background-color: #10b981;
+            color: #030712;
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+        }
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        .tagline {
+            font-size: 24px;
+            color: #10b981;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+        .sub-tagline {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 15px;
+        }
+        #earth-container {
+            width: 100%;
+            max-width: 480px;
+            height: 480px;
+            margin: 0 auto;
+            position: relative;
+            cursor: grab;
+        }
+        #earth-container:active {
+            cursor: grabbing;
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 30px;
+            padding: 0 20px;
+        }
+        .stat-card {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border-left: 5px solid #10b981;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .stat-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        @media (max-width: 768px) {
+            #earth-container {
+                height: 360px;
+            }
+            .tagline {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">☀️ USF <span>Solar</span></div>
+        <a href="https://www.usfsolar.in" target="_blank" class="visit-btn">Visit Website</a>
+    </header>
+
+    <section class="hero-section">
+        <div class="tagline">Global Solar Revolution</div>
+        <div class="sub-tagline">Realistic Earth with Oceans, Continents & Solar Grids</div>
+        
+        <div id="earth-container"></div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Quality GI Structure & Rooftop Solar Fabrication</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">500+</div>
+                <div class="stat-label">Successful Solar Installations Across Gujarat</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Tier-1</div>
+                <div class="stat-label">High-Efficiency Solar Panels & Polycab Wiring</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Expert Engineering & Maintenance Support</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three.js & OrbitControls CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <script>
+        const container = document.getElementById('earth-container');
+        const scene = new THREE.Scene();
+        
+        const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.z = 3.8;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // माउस/टच से घुमाने के लिए कंट्रोल्स
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.rotateSpeed = 0.8;
+        controls.enableZoom = false;
+
+        // लाइटिंग
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+        scene.add(ambientLight);
+
+        const sunLight = new THREE.DirectionalLight(0xffffff, 2.2);
+        sunLight.position.set(5, 3, 5);
+        scene.add(sunLight);
+
+        const earthGroup = new THREE.Group();
+        scene.add(earthGroup);
+
+        // 1. हाई-डिफ़िनिशन रियलिस्टिक अर्थ टेक्सचर (पानी, महाद्वीप और चमकते सोलर ग्रिड्स)
+        function createProEarthTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 2048;
+            canvas.height = 1024;
+            const ctx = canvas.getContext('2d');
+            
+            // महासागर (Deep Blue Ocean)
+            ctx.fillStyle = '#0b2545';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // महाद्वीप (Continents - Landmasses)
+            ctx.fillStyle = '#114b3e';
+            
+            // उत्तरी अमेरिका
+            ctx.beginPath(); ctx.ellipse(450, 300, 260, 190, 0.2, 0, Math.PI * 2); ctx.fill();
+            // दक्षिण अमेरिका
+            ctx.beginPath(); ctx.ellipse(620, 720, 160, 240, -0.3, 0, Math.PI * 2); ctx.fill();
+            // यूरोप और अफ्रीका
+            ctx.beginPath(); ctx.ellipse(1120, 340, 210, 170, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(1150, 680, 230, 260, 0.1, 0, Math.PI * 2); ctx.fill();
+            // एशिया
+            ctx.beginPath(); ctx.ellipse(1560, 310, 380, 230, 0, 0, Math.PI * 2); ctx.fill();
+            // ऑस्ट्रेलिया
+            ctx.beginPath(); ctx.ellipse(1760, 820, 130, 110, 0, 0, Math.PI * 2); ctx.fill();
+
+            // चमकते हुए सोलर पैनल्स और ग्रिड नोड्स (Glowing Solar Grid Networks)
+            ctx.fillStyle = '#10b981';
+            ctx.shadowColor = '#10b981';
+            ctx.shadowBlur = 10;
+            
+            for (let i = 0; i < 500; i++) {
+                let x = Math.random() * canvas.width;
+                let y = 150 + Math.random() * 724;
+                ctx.fillRect(x, y, 12, 6);
+            }
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        const earthGeometry = new THREE.SphereGeometry(1.5, 64, 64);
+        const earthMaterial = new THREE.MeshPhongMaterial({
+            map: createProEarthTexture(),
+            specular: 0x444444,
+            shininess: 30
+        });
+
+        const earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
+        earthGroup.add(earthMesh);
+
+        // 2. 3D सोलर पैनल ब्लॉक्स सतह के ऊपर (Raised Solar Panel Blocks)
+        const panelGroup = new THREE.Group();
+        const boxGeo = new THREE.BoxGeometry(0.04, 0.02, 0.01);
+        const boxMat = new THREE.MeshBasicMaterial({ color: 0x00ffcc });
+
+        for (let i = 0; i < 100; i++) {
+            const panel = new THREE.Mesh(boxGeo, boxMat);
+            const phi = Math.acos(-1 + (2 * Math.random()));
+            const theta = Math.random() * Math.PI * 2;
+            const r = 1.52;
+
+            panel.position.x = r * Math.sin(phi) * Math.cos(theta);
+            panel.position.y = r * Math.sin(phi) * Math.sin(theta);
+            panel.position.z = r * Math.cos(phi);
+
+            panel.lookAt(0, 0, 0);
+            panelGroup.add(panel);
+        }
+        earthGroup.add(panelGroup);
+
+        // 3. वायुमंडल ग्लो (Atmospheric Green Glow)
+        const atmosGeo = new THREE.SphereGeometry(1.58, 64, 64);
+        const atmosMat = new THREE.MeshBasicMaterial({
+            color: 0x10b981,
+            transparent: true,
+            opacity: 0.15,
+            side: THREE.BackSide
+        });
+        const atmosMesh = new THREE.Mesh(atmosGeo, atmosMat);
+        scene.add(atmosMesh);
+
+        // एनिमेशन लूप
+        function animate() {
+            requestAnimationFrame(animate);
+            earthGroup.rotation.y += 0.002;
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // रिसाइज
+        window.addEventListener('resize', () => {
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        });
+    </script>
+</body>
+</html>
 
