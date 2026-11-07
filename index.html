@@ -1,1 +1,274 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USF Solar - One with Solar Energy</title>
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #0b1120;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* --- टॉप हेडर --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo span {
+            color: #ffffff;
+        }
+        .visit-btn {
+            background-color: #10b981;
+            color: #0b1120;
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            transition: all 0.3s ease;
+        }
+        .visit-btn:hover {
+            background-color: #059669;
+            color: #ffffff;
+        }
+
+        /* --- हीरो अनुभाग --- */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .hero-headline {
+            font-size: 22px;
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- 3D रोटेटिंग अर्थ ग्लोब --- */
+        #earth-container {
+            width: 380px;
+            height: 380px;
+            margin: 30px auto;
+            perspective: 1000px;
+            cursor: grab;
+        }
+        #earth-container:active { cursor: grabbing; }
+        
+        #earth-globe {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, #3b82f6 10%, #1d4ed8 40%, #032b44 100%);
+            border-radius: 50%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateEarth 20s infinite linear;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8), 0 0 30px rgba(16, 185, 129, 0.4);
+        }
+
+        /* पृथ्वी पर सोलर ग्रिड पैटर्न */
+        #earth-globe::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%;
+            background-image: 
+                repeating-linear-gradient(90deg, transparent, transparent 35px, rgba(16, 185, 129, 0.15) 35px, rgba(16, 185, 129, 0.15) 36px),
+                repeating-linear-gradient(0deg, transparent, transparent 35px, rgba(16, 185, 129, 0.15) 35px, rgba(16, 185, 129, 0.15) 36px);
+            transform: translateZ(1px);
+        }
+
+        /* चमकते हुए सोलर पैनल डॉट्स */
+        .solar-panel-dot {
+            position: absolute;
+            width: 10px; height: 10px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #10b981, 0 0 25px #10b981;
+            animation: pulseDot 2s infinite alternate;
+        }
+
+        /* --- सांख्यिकी कार्ड्स (Statistics Grid) --- */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 40px;
+            padding: 0 20px;
+        }
+        .stat-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-left: 5px solid #10b981;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #94a3b8;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* --- एनिमेशन की-फ्रेम्स --- */
+        @keyframes rotateEarth {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        @keyframes pulseDot {
+            0% { opacity: 0.4; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.6); }
+        }
+
+        @media (max-width: 768px) {
+            #earth-container { width: 300px; height: 300px; }
+            .hero-headline { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- नेविगेशन बार -->
+    <header>
+        <div class="logo">☀️ USF <span>Solar</span></div>
+        <a href="https://www.usfsolar.in" target="_blank" class="visit-btn">Visit Website</a>
+    </header>
+
+    <!-- हीरो सेक्शन -->
+    <section class="hero-section">
+        <h2 class="hero-headline">Energy Solution at a Time.</h2>
+        
+        <!-- 3D Earth Globe -->
+        <div id="earth-container">
+            <div id="earth-globe">
+                <div class="solar-panel-dot" style="top: 30%; left: 25%;"></div>
+                <div class="solar-panel-dot" style="top: 55%; left: 60%;"></div>
+                <div class="solar-panel-dot" style="top: 70%; left: 35%;"></div>
+                <div class="solar-panel-dot" style="top: 35%; left: 75%;"></div>
+                <div class="solar-panel-dot" style="top: 20%; left: 45%;"></div>
+            </div>
+        </div>
+
+        <!-- सांख्यिकी ग्रिड -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Quality GI Structure & Rooftop Solar Fabrication</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">500+</div>
+                <div class="stat-label">Successful Solar Installations Across Gujarat</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Tier-1</div>
+                <div class="stat-label">High-Efficiency Solar Panels & Polycab Wiring</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Expert Engineering & Maintenance Support</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- माउस या उंगली से घुमाने के लिए स्क्रिप्ट -->
+    <script>
+        const earth = document.getElementById('earth-container');
+        let isDragging = false;
+        let startX;
+        let currentRotation = 0;
+
+        earth.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.pageX;
+            earth.querySelector('#earth-globe').style.animation = 'none';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const dx = e.pageX - startX;
+                earth.querySelector('#earth-globe').style.transform = `rotateY(${currentRotation + dx}deg)`;
+            }
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (isDragging) {
+                isDragging = false;
+                currentRotation += (e.pageX - startX);
+                earth.querySelector('#earth-globe').style.animation = 'rotateEarth 20s infinite linear';
+            }
+        });
+
+        // मोबाइल टच सपोर्ट
+        earth.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].pageX;
+            earth.querySelector('#earth-globe').style.animation = 'none';
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                const dx = e.touches[0].pageX - startX;
+                earth.querySelector('#earth-globe').style.transform = `rotateY(${currentRotation + dx}deg)`;
+            }
+        });
+
+        window.addEventListener('touchend', (e) => {
+            if (isDragging) {
+                isDragging = false;
+                currentRotation += (e.changedTouches[0].pageX - startX);
+                earth.querySelector('#earth-globe').style.animation = 'rotateEarth 20s infinite linear';
+            }
+        });
+    </script>
+</body>
+</html>
 
